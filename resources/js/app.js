@@ -1,15 +1,11 @@
 require("./bootstrap");
+import Vue from "vue";
+import VueCookies from "vue-cookies";
+import App from "./components/App";
+import router from "./router";
 import "../css/app.css";
 
-import Vue from "vue";
-import VueRouter from "vue-router";
-
-Vue.use(VueRouter);
-
-import App from "./components/App";
-import routes from "./router";
-
-const router = new VueRouter(routes);
+Vue.use(VueCookies, { expires: "1D" });
 
 const app = new Vue({
     el: "#app",

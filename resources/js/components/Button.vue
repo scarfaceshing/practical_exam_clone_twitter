@@ -1,8 +1,5 @@
 <template>
-    <button
-        type="submit"
-        class="w-full bg-gray-500 py-2 rounded-lg text-white flex items-center justify-center"
-    >
+    <button type="submit" :class="className">
         <div v-if="isLoading" class="flex">
             <svg
                 aria-hidden="true"
@@ -23,7 +20,7 @@
             <span class="pl-2">Processing...</span>
         </div>
         <div v-else>
-            <span>Submit</span>
+            <span>{{ this.title }}</span>
         </div>
     </button>
 </template>
@@ -34,6 +31,15 @@ export default {
         isLoading: {
             type: Boolean,
             default: false,
+        },
+        title: {
+            type: String,
+            default: "Submit",
+        },
+        className: {
+            type: String,
+            default:
+                "w-full bg-gray-500 py-2 rounded-lg text-white flex items-center justify-center",
         },
     },
 };

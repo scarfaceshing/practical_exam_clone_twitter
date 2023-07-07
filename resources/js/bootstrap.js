@@ -11,8 +11,15 @@ try {
  */
 
 window.axios = require("axios");
-
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+window.axios.defaults.withCredentials = true;
+
+import Cookies from "./cookies";
+
+const token = Cookies.getToken();
+if (token) {
+    window.axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

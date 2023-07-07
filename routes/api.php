@@ -17,14 +17,13 @@ use App\Http\Controllers\RegisterController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('login', [LoginController::class, 'login']);
 Route::post('register', [RegisterController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
     Route::resource('twitter', TwitterController::class);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });

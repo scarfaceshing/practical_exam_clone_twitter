@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 class TwitterController extends Controller
 {
     const DESTINATION_PATH = 'twitter';
+    const UNPROCESSABLE_CONTENT = 422;
 
     /**
      * Display a listing of the resource.
@@ -48,11 +49,11 @@ class TwitterController extends Controller
     {
         $validator = Validator::make($request->only(['tweet', 'file']), [
             'tweet' => ['required', 'max: 100'],
-            'file' => ['required', 'mimes:jpg,bmp,png'],
+            // 'file' => ['required', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), self::UNPROCESSABLE_CONTENT);
         }
 
         $tweet = $request->tweet;
@@ -109,7 +110,7 @@ class TwitterController extends Controller
     {
         $validator = Validator::make($request->only(['tweet', 'file']), [
             'tweet' => ['required', 'max: 100'],
-            'file' => ['required', 'mimes:jpg,bmp,png'],
+            // 'file' => ['required', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {

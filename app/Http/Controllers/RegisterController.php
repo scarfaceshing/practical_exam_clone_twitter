@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class RegisterController extends Controller
 {
     const UNPROCESSABLE_CONTENT = 422;
+    const SUCCESS_STATUS = 200;
 
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -30,6 +31,6 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json('Register Successfully');
+        return response()->json(['message' => 'Register Successfully'], self::SUCCESS_STATUS);
     }
 }
