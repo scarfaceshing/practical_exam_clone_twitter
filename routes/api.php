@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,6 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
     Route::resource('twitter', TwitterController::class);
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('user', [UserController::class, 'user']);
+    Route::get('user/{username}', [UserController::class, 'profile']);
 });

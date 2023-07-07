@@ -140,11 +140,11 @@ export default {
                 password: this.password,
             };
 
-            const http = HTTP.post(URL, data);
+            const http = HTTP.post(URL, data, null);
 
             http.then((response) => {
                 if (response.status === SUCCESS_STATUS) {
-                    this.$router.push("/login");
+                    this.$router.push({ name: "login" });
                     this.isSubmiting = false;
                 }
             }).catch((error) => {

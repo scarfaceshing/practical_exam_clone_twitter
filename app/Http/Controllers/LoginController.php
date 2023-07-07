@@ -8,20 +8,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
 {
     const UNAUTHORIZED = 401;
 
-    function login(Request $request) {
-        
-        $validator = Validator::make($request->all(), [
-            'username' => 'exists:App\Models\User,username',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), self::UNAUTHORIZED);
-        }
+    function login(LoginRequest $request) {
 
         $credentials = $request->only(['username', 'password']);
         $user = User::where(['username' => $request->username])->first();

@@ -24,7 +24,7 @@ class TwitterController extends Controller
      */
     public function index()
     {
-        $twitter = Twitter::all();
+        $twitter = Twitter::with('users')->orderBy('created_at', 'DESC')->get();
 
         return response()->json($twitter);
     }
@@ -49,7 +49,7 @@ class TwitterController extends Controller
     {
         $validator = Validator::make($request->only(['tweet', 'file']), [
             'tweet' => ['required', 'max: 100'],
-            // 'file' => ['required', 'mimes:jpg,bmp,png'],
+            'file' => ['required', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {
@@ -59,21 +59,18 @@ class TwitterController extends Controller
         $tweet = $request->tweet;
         $file = $request->file;
         $user_id = $request->user()->id;
+        $file_data = $this->getFileData($file);
 
-        $request = [
+        $new_request = [
             'tweet' => $tweet,
-            'uploaded_by_user' => $user_id,
+            'tweet_by_user' => $user_id,
         ];
 
-        if ($file) {
-            $file_data = $this->getFileData($file);
+        $new_request = array_merge($new_request, $file_data);
+
+        if (Twitter::create($new_request)) {
             $file->storeAs(self::DESTINATION_PATH, $file_data['file_name'], 'public');
-            $file_data = $this->getFileData($file);
-
-            $request = array_merge($request, $file_data);
         }
-
-        $twitter = Twitter::create($request);
         
         return response()->json('Created twitter success');
     }

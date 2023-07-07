@@ -9,7 +9,7 @@
 <body>
 
 <div id="app">
- <app></app>
+ <app-page></app-page>
 </div>
 
 <script src="{{ asset('js/app.js')}}" ></script>

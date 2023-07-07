@@ -18,8 +18,8 @@ class CreateTwittersTable extends Migration
             $table->longText('tweet');
             $table->string('file_name')->nullable();
             $table->string('file_path')->nullable();
-            $table->unsignedBigInteger('uploaded_by_user');
-            $table->foreign('uploaded_by_user')->references('id')->on('users');
+            $table->unsignedBigInteger('tweet_by_user');
+            $table->foreign('tweet_by_user')->references('id')->on('users');
             $table->timestamps();
         });
     }

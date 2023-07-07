@@ -16,10 +16,29 @@ window.axios.defaults.withCredentials = true;
 
 import Cookies from "./cookies";
 
-const token = Cookies.getToken();
-if (token) {
-    window.axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
+window.axios.interceptors.request.use(
+    function (config) {
+        const token = Cookies.getToken();
+
+        if (token !== null) {
+            config.headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
+window.axios.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

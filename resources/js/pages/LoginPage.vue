@@ -60,9 +60,9 @@ import Cookies from "../cookies";
 
 const URL = "api/login";
 const SUCCESS_STATUS = 200;
-const TWITTER_URL = "/api/v1/twitter";
 
 export default {
+    name: "login",
     components: {
         Button,
     },
@@ -89,7 +89,7 @@ export default {
                 password: this.password,
             };
 
-            const http = HTTP.post(URL, data);
+            const http = HTTP.post(URL, data, null);
 
             http.then((response) => {
                 if (response.status === SUCCESS_STATUS) {
