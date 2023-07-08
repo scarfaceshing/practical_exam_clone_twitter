@@ -8,4 +8,9 @@ export default {
         const response = await axios.get(url);
         return response;
     },
+
+    async put(url, data, headers) {
+        const response = await axios.put(url, data, headers);
+        return response;
+    },
 };

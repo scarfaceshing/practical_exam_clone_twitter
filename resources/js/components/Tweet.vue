@@ -25,7 +25,7 @@
                         @click="edit(tweetData)"
                         ><PenIcon
                     /></a>
-                    <a href="javascript:void(0)" @click="edit(tweetData)" v-else
+                    <a href="javascript:void(0)" @click="save(tweetData)" v-else
                         ><SaveIcon
                     /></a>
                 </span>
@@ -49,11 +49,12 @@
                 class="grid grid-cols-2 space-y-5 space-x-5 w-full"
             >
                 <div>
-                    <input type="text" :value="tweetData.tweet" />
+                    <input type="text" :value="tweetData.tweet" ref="tweet" />
                 </div>
                 <div
                     v-if="tweetData.file_name"
                     class="w-full h-72 bg-green-500 group"
+                    @click="uploadFile"
                 >
                     <span
                         class="absolute hidden group-hover:inline mt-28 ml-24 text-2xl font-bold"
@@ -61,7 +62,14 @@
                     >
                     <img
                         :src="`${storage_path}/${tweetData.file_name}`"
+                        ref="image"
                         class="group-hover:opacity-50 w-full h-full"
+                    />
+                    <input
+                        type="file"
+                        class="hidden"
+                        ref="file"
+                        @change="onChangePhoto"
                     />
                 </div>
             </div>
@@ -74,6 +82,7 @@ import PenIcon from "../icons/PenIcon";
 import SaveIcon from "../icons/SaveIcon";
 
 const STORAGE_PATH = "/storage/twitter";
+const ALLOWED_FILE = ["png", "jpg", "bmp"];
 
 export default {
     components: {
@@ -84,11 +93,48 @@ export default {
         tweetData: {
             type: Object,
         },
+        index: {
+            type: Number,
+        },
+    },
+
+    data() {
+        return {
+            imagePlaceholder: null,
+            file: null,
+        };
     },
 
     methods: {
         edit(data) {
-            this.$emit("edit", data);
+            this.$emit("editTweet", data);
+        },
+
+        save(data) {
+            const collect = {
+                tweet: this.$refs.tweet.value,
+                file: this.file,
+                prevData: data,
+            };
+
+            this.$emit("saveTweet", collect);
+        },
+
+        uploadFile(e) {
+            this.$refs.file.click();
+        },
+
+        onChangePhoto(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const fileName = file.name;
+                const fileExtension = fileName.split(".")[1];
+                if (ALLOWED_FILE.includes(fileExtension)) {
+                    this.imagePlaceholder = URL.createObjectURL(file);
+                    this.file = file;
+                    this.$refs.image.src = this.imagePlaceholder;
+                }
+            }
         },
     },
 

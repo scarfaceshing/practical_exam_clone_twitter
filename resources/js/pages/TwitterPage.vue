@@ -64,8 +64,10 @@
                 <div class="grid grid-cols-1">
                     <div v-for="(data, index) in tweets" :key="index">
                         <Tweet
+                            :index="index"
                             :tweet-data="data"
-                            @edit="edit"
+                            @editTweet="editTweet"
+                            @saveTweet="saveTweet"
                             v-if="reloadComponent"
                         />
                     </div>
@@ -111,14 +113,51 @@ export default {
     },
 
     methods: {
-        edit(value) {
+        editTweet(value) {
             const index = this.tweets.indexOf(value);
-            const toggle = !this.tweets[index].isEditing;
-            this.tweets[index].isEditing = toggle;
+            this.tweets[index].isEditing = true;
 
             this.reloadComponent = false;
             this.$nextTick(() => {
                 this.reloadComponent = true;
+            });
+        },
+        saveTweet(newValue) {
+            const index = this.tweets.indexOf(newValue.prevData);
+            this.tweets[index].isEditing = false;
+
+            this.reloadComponent = false;
+            this.$nextTick(() => {
+                this.reloadComponent = true;
+            });
+
+            const headers = {
+                "Content-type": "multipart/form-data",
+            };
+
+            let formData = new FormData();
+
+            formData.append("tweet", newValue.tweet);
+            formData.append("file", newValue.file);
+            formData.append("_method", "put");
+
+            console.log(formData);
+
+            const http = HTTP.post(
+                `${TWITTER_URL}/${newValue.prevData.id}`,
+                formData,
+                headers
+            );
+
+            http.then((response) => {
+                if (response.status === SUCCESS_STATUS) {
+                    this.fetchTweet();
+                }
+            }).catch((error) => {
+                if (error.response) {
+                    this.validate = error.response.data;
+                    this.isSubmiting = false;
+                }
             });
         },
         logout() {

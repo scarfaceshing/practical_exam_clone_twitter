@@ -107,7 +107,7 @@ class TwitterController extends Controller
     {
         $validator = Validator::make($request->only(['tweet', 'file']), [
             'tweet' => ['required', 'max: 100'],
-            // 'file' => ['required', 'mimes:jpg,bmp,png'],
+            'file' => ['required', 'mimes:jpg,bmp,png'],
         ]);
 
         if ($validator->fails()) {
