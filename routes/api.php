@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,6 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::resource('twitter', TwitterController::class);
     Route::get('user', [UserController::class, 'user']);
     Route::get('user/{username}', [UserController::class, 'profile']);
+    Route::post('follow/{username}', [FollowerController::class, 'follow']);
+    Route::post('un-follow/{username}', [FollowerController::class, 'un_follow']);
 });
