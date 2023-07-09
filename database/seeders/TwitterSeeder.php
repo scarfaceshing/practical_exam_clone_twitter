@@ -14,6 +14,6 @@ class TwitterSeeder extends Seeder
      */
     public function run()
     {
-        Twitter::factory(50)->create();
+        Twitter::factory(10)->create();
     }
 }
