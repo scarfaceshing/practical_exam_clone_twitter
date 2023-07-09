@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
+use App\Http\Requests\TwitterRequest;
 
 class TwitterController extends Controller
 {
@@ -45,17 +46,8 @@ class TwitterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): JsonResponse
+    public function store(TwitterRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->only(['tweet', 'file']), [
-            'tweet' => ['required', 'max: 100'],
-            'file' => ['required', 'mimes:jpg,bmp,png'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), self::UNPROCESSABLE_CONTENT);
-        }
-
         $tweet = $request->tweet;
         $file = $request->file;
         $user_id = $request->user()->id;
@@ -81,9 +73,9 @@ class TwitterController extends Controller
      * @param  \App\Models\Twitter  $twitter
      * @return \Illuminate\Http\Response
      */
-    public function show(Twitter $twitter): JsonResponse
-    {  
-        return response()->json($twitter);
+    public function show(Twitter $twitter = null): JsonResponse
+    { 
+       return response()->json($twitter);
     }
 
     /**
@@ -103,17 +95,8 @@ class TwitterController extends Controller
      * @param  \App\Models\Twitter  $twitter
      * @return \Illuminate\Http\Response
      */
-    public function update(Twitter $twitter, Request $request)
+    public function update(Twitter $twitter, TwitterRequest $request)
     {
-        $validator = Validator::make($request->only(['tweet', 'file']), [
-            'tweet' => ['required', 'max: 100'],
-            'file' => ['required', 'mimes:jpg,bmp,png'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-
         $tweet = $request->tweet;
         $file = $request->file;
         $user_id = $request->user()->id;
@@ -134,7 +117,7 @@ class TwitterController extends Controller
 
         $twitter = $twitter->update($request);
         
-        return response()->json("Updated Successfully");
+        return response()->json(['message' => "Updated Successfully"]);
     }
 
     /**

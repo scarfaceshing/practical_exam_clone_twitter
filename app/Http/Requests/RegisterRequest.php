@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,10 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'exists:App\Models\User,username'],
-            'password' => ['required']
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'username.exists' => 'Username is does\'st exist in our database.',
+            'name' => ['required', 'max:100', 'regex:/^[a-zA-Z| ]+$/u'],
+            'username' => ['required', 'max:50', 'min:5', 'regex:/^[a-z0-9]+$/u'],
+            'email' => ['required', 'email:rfc,dns'],
+            'password' => ['required'],
         ];
     }
 }

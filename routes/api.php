@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::resource('twitter', TwitterController::class);
     Route::get('user', [UserController::class, 'user']);
     Route::get('user/{username}', [UserController::class, 'profile']);
-    Route::post('follow/{username}', [FollowerController::class, 'follow']);
-    Route::post('un-follow/{username}', [FollowerController::class, 'un_follow']);
+    Route::post('follow/{username}', [FollowerController::class, 'follow'])->name('follow');
+    Route::post('un-follow/{username}', [FollowerController::class, 'un_follow'])->name('un_follow');
+    Route::get('list-followed-tweet/{user}', [FollowerController::class, 'list_followed_tweet'])->name('list-followed-tweeted');
+    Route::get('list-suggested-follow/{user}', [FollowerController::class, 'suggested_follow'])->name('list-suggested-follow');
 });

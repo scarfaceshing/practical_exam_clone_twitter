@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class TwitterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,8 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'exists:App\Models\User,username'],
-            'password' => ['required']
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'username.exists' => 'Username is does\'st exist in our database.',
+            'tweet' => ['required', 'max: 100'],
+            'file' => ['required', 'mimes:jpg,bmp,png'],
         ];
     }
 }

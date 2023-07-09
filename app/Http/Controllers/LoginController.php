@@ -14,9 +14,9 @@ class LoginController extends Controller
 {
     const UNAUTHORIZED = 401;
 
-    function login(LoginRequest $request) {
-
-        $credentials = $request->only(['username', 'password']);
+    function login(LoginRequest $request) 
+    {
+        $username = $request->username;
         $user = User::where(['username' => $request->username])->first();
         $user_password = $user->password;
         $is_valid = Hash::check($request->password, $user_password);

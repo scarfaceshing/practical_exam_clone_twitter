@@ -15,7 +15,7 @@ class CreateFollowersTable extends Migration
     {
         Schema::create('followers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('follower_by_user');
             $table->foreign('follower_by_user')->references('id')->on('users');
             $table->foreign('user_id')->references('id')->on('users');
